@@ -10,12 +10,12 @@ static void on_server_close() {
     printf("worked\n");
 }
 
-int main() {
+int main(int ac, char **args) {
     network_server_t server;
 
     server_config_t config = {
             .host = INADDR_ANY,
-            .port = 6667,
+            .port = atoi(args[1]),
             .packet_delimiter = "\r\n",
             .packet_max_size = IRC_BUFFER_SIZE,
             .configure_handlers = &configure_client_handler,
