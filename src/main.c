@@ -11,6 +11,8 @@ static void on_server_close() {
 }
 
 int main(int ac, char **args) {
+    if (ac != 2)
+        return 84;
     network_server_t server;
 
     server_config_t config = {
