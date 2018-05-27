@@ -2,7 +2,7 @@ CC      = gcc
 
 RM      = rm -f
 
-CFLAGS  += -W -Wall -Wextra -Iinc
+CFLAGS  += -Iinc
 
 NAME    = server
 
@@ -12,7 +12,8 @@ SRCS    =	src/client_handler.c	\
 		src/network_client.c	\
 		src/network_epoll.c	\
 		src/network_server.c	\
-		src/util.c
+		src/util.c \
+		src/irc_handler.c
 
 OBJS    = $(SRCS:.c=.o)
 
