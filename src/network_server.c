@@ -33,6 +33,7 @@ static void new_connection(network_server_t *server) {
     client->id = new_connection;
     client->length = 0;
     client->server = server;
+    client->closed = false;
 
     list_add(&server->clients, client);
     server->client_handler.on_connect(client);
@@ -44,20 +45,22 @@ static void read_data(network_server_t *server, int client) {
     ssize_t bytes = read(client, buffer, NETWORK_READ_SIZE);
     network_client_t *found = network_client_find(&server->clients, client);
 
-    if (bytes <= 0) {
+    if (bytes <= 0)
+        network_client_close(found);
+    else
+        network_client_read(server, found, buffer, (size_t) bytes);
+
+    if (found->closed) {
         server->client_handler.on_disconnect(found);
         list_remove(&server->clients, found);
-        network_client_close(found);
         network_client_free(found);
-    } else {
-        network_client_read(server, found, buffer, (size_t) bytes);
     }
 }
 
 static void on_client_ready(session_t client, void *server_ptr) {
     network_server_t *server = server_ptr;
 
-    if (client == -1) {
+    if (client == ERROR) {
         for (iter_t *it = iter_begin(&server->clients); it; iter_next(it)) {
             network_client_t *nc = it->data;
             server->client_handler.on_disconnect(nc);

@@ -6,6 +6,8 @@
 # define MYIRC_IRC_H
 
 # define IRC_BUFFER_SIZE        (512)
+# define IRC_PACKET_DELIMITER   ("\r\n")
+# define IRC_PARAM_SEPARATOR    (" ")
 
 # include "network.h"
 
@@ -31,8 +33,12 @@ struct command_s {
 
 void configure_client_handler(client_handler_t *handler);
 
-void on_nickname_message(user_t *user, char **parameters);
+void parse_packet(network_client_t *client, char const *packet, size_t len);
 
-void on_quit(user_t *user, char **parameters);
+user_t *find_user(network_client_t *client);
+
+void send_packet(user_t *user, char const *msg);
+
+void kick_user(user_t *user, char *msg);
 
 #endif //MYIRC_IRC_H

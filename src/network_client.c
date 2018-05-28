@@ -12,6 +12,7 @@
 void network_client_close(network_client_t *client) {
     epoll_del_client(client->server->epoll_id, client->id);
     close(client->id);
+    client->closed = true;
 }
 
 void network_client_free(void *ptr) {
@@ -70,8 +71,10 @@ void network_client_read(network_server_t *server,
         char *packet = split[i];
         size_t packet_length = strlen(packet);
 
-        if (!too_much_data(client, packet_length, max_size))
+        if (!too_much_data(client, packet_length, max_size)) {
             server->client_handler.on_received(client, packet, packet_length);
+            if (client->closed) return;
+        }
     }
 
     done:

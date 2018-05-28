@@ -36,6 +36,7 @@ struct network_client_s {
     buffer_state_t bstate;
     size_t length;
     network_server_t *server;
+    bool closed;
 };
 
 struct client_handler_s {

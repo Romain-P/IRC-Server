@@ -6,14 +6,15 @@ CFLAGS  += -Iinc
 
 NAME    = server
 
-SRCS    =	src/client_handler.c	\
-		src/linked_list.c	\
-		src/main.c		\
-		src/network_client.c	\
-		src/network_epoll.c	\
-		src/network_server.c	\
-		src/util.c \
-		src/irc_handler.c
+SRCS    =	src/irc_client_handler.c	\
+            src/linked_list.c	        \
+            src/main.c		            \
+            src/network_client.c	    \
+            src/network_epoll.c	        \
+            src/network_server.c	    \
+            src/util.c                  \
+            src/irc_packet_handler.c    \
+            src/irc_user.c
 
 OBJS    = $(SRCS:.c=.o)
 
